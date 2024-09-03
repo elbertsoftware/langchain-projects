@@ -5,7 +5,7 @@
 3. pipenv install (run once)
 4. pipenv shell
    
-5. python main.py
+5. python main.py --language java --task 'prints Hello World to the console'
 
 6.  exit
 7.  conda deactivate

@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 
 # moved to .env file which should not be checked in
 # api_key = 'sk...'
+load_dotenv()  # OpenAI class below will look for API key from the environment variable OPENAI_API_KEY
 
 parser = ArgumentParser()
 parser.add_argument('--language', default='python')
@@ -15,9 +16,8 @@ parser.add_argument('--task', default='returns a list of numbers')
 # python main.py --language java --task 'prints Hello World to the console'
 args = parser.parse_args()
 
-load_dotenv()  # OpenAI class below will look for API key from the environment variable OPENAI_API_KEY
 llm = OpenAI(
-  #openai_api_key=api_key
+  #openai_api_key=api_key  # OpenAI class will look for environmental variable with this name OPENAI_API_KEY automatically
 )
 
 code_prompt = PromptTemplate(
