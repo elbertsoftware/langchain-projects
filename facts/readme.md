@@ -4,8 +4,9 @@
 2. conda activate langchain
 3. pipenv install (run once)
 4. pipenv shell
+5. pip install chromadb
    
-5. python main.py
+6. python main.py
 
-6.  exit
-7.  conda deactivate
+7.  exit
+8.  conda deactivate
