@@ -6,7 +6,8 @@
 4. pipenv shell
 5. pip install chromadb
    
-6. python main.py
+6. python main.py (run once to generate and populate the vector db)
+7. python prompt.py
 
-7.  exit
-8.  conda deactivate
+8.  exit
+9.  conda deactivate
