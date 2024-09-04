@@ -5,6 +5,10 @@ from langchain.vectorstores.chroma import Chroma
 from langchain.chains import RetrievalQA
 from langchain.chat_models import ChatOpenAI
 
+# enable debug mode
+# import langchain
+# langchain.debug = True
+
 load_dotenv()
 
 embeddings = OpenAIEmbeddings()
@@ -21,7 +25,11 @@ chat = ChatOpenAI()
 chain = RetrievalQA.from_chain_type(
   llm=chat,
   retriever=retriever,
-  chain_type='stuff'
+  chain_type='stuff',  # take some context from the vector store and 'stuff' it into the prompt
+  #chain_type='map_reduce',
+  #chain_type='map_rerank',
+  #chain_type='refine',
+  #verbose=True  # bug in langchain, does not work, enable global debug as above
 )
 
 result = chain.run('What is an interesting fact about the English language?')
