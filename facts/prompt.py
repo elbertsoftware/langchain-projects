@@ -22,7 +22,7 @@ retriever = db.as_retriever()
 
 chat = ChatOpenAI()
 
-chain = RetrievalQA.from_chain_type(
+chain = RetrievalQA.from_chain_type(  # Ctrl + click to view source code
   llm=chat,
   retriever=retriever,
   chain_type='stuff',  # take some context from the vector store and 'stuff' it into the prompt
