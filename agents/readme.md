@@ -9,3 +9,42 @@
 
 6.  exit
 7.  conda deactivate
+
+Use the online tool to generate JSON schema:
+https://transform.tools/json-to-json-schema
+
+input:
+{
+  "query": "SELECT..."
+}
+
+output:
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Generated schema for Root",
+  "type": "object",
+  "properties": {
+    "query": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "query"
+  ]
+}
+
+use only this section for the "parameters" of the ChatGPT function definitions:
+
+"parameters": {
+  {
+    "type": "object",
+    "properties": {
+      "query": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "query"
+    ]
+  }
+}
