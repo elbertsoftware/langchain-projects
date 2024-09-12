@@ -6,6 +6,7 @@ from langchain.schema import SystemMessage
 from dotenv import load_dotenv
 
 from tools.sql import list_tables, describe_table_tool, run_sqlite_tool
+from tools.report import write_report_tool
 
 load_dotenv()
 
@@ -31,7 +32,11 @@ prompt = ChatPromptTemplate(
   ]
 )
 
-tools = [describe_table_tool, run_sqlite_tool]
+tools = [
+  describe_table_tool, 
+  run_sqlite_tool, 
+  write_report_tool
+]
 
 agent = OpenAIFunctionsAgent(
   llm=chat,
@@ -48,5 +53,9 @@ agent_executor = AgentExecutor(
 # worked since it's simple enough
 # agent_executor('How many users are in the database?')
 
-# did not work, needs more work here
-agent_executor('How many users have provided a shipping address?')
+# did not work, needs more work here, eventually it worked with describe_table_tool in place
+# agent_executor('How many users have provided a shipping address?')
+
+# testing for generate report
+# ChatGPT output: The top 5 most popular products have been summarized and written to a report file. You can download the report from [this link](sandbox:/top_5_popular_products_report.html)
+agent_executor('Summarize the top 5 most popular products. Write the results to a report file')
