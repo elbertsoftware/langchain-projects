@@ -5,7 +5,7 @@ from langchain.schema import SystemMessage
 
 from dotenv import load_dotenv
 
-from tools.sql import list_tables, run_sqlite_tool
+from tools.sql import list_tables, describe_table_tool, run_sqlite_tool
 
 load_dotenv()
 
@@ -23,7 +23,7 @@ prompt = ChatPromptTemplate(
   ]
 )
 
-tools = [run_sqlite_tool]
+tools = [describe_table_tool, run_sqlite_tool]
 
 agent = OpenAIFunctionsAgent(
   llm=chat,
