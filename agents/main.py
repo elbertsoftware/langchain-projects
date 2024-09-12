@@ -17,7 +17,15 @@ prompt = ChatPromptTemplate(
   messages=[
     # only declare table names here in the SystemMessage to reduce message length
     # detailed table schema will be provided via a new tool for ChatGPT to use when it needs
-    SystemMessage(content=f'You are an AI that has access to a SQLite database which has the following tables:\n{tables}'),
+    # SystemMessage(content='You are an AI that has access to a SQLite database which has the following tables: {tables}'),
+
+    # better SystemMessage content
+    SystemMessage(content=(
+      'You are an AI that has access to a SQLite database.\n'
+      f'The database has tables of {tables}.\n'
+      'Do not make any assumptions about what tables or columns exist.\n'
+      'Let make use of the provided "describe_tables" function instead.'
+    )),
     HumanMessagePromptTemplate.from_template('{input}'),
     MessagesPlaceholder(variable_name='agent_scratchpad')  # agent_scratchpad acts like a simplified memory to keep track of the chat history
   ]
