@@ -2,6 +2,7 @@ from langchain.chat_models import ChatOpenAI
 from langchain.prompts import ChatPromptTemplate, HumanMessagePromptTemplate, MessagesPlaceholder
 from langchain.agents import OpenAIFunctionsAgent, AgentExecutor
 from langchain.schema import SystemMessage
+from langchain.memory import ConversationBufferMemory
 
 from dotenv import load_dotenv
 
@@ -27,6 +28,7 @@ prompt = ChatPromptTemplate(
       'Do not make any assumptions about what tables or columns exist.\n'
       'Let make use of the provided "describe_tables" function instead.'
     )),
+    MessagesPlaceholder(variable_name='chat_history'),  # memory to keep message history b/w agent_executor calls, must be above next user message
     HumanMessagePromptTemplate.from_template('{input}'),
     MessagesPlaceholder(variable_name='agent_scratchpad')  # agent_scratchpad acts like a simplified memory to keep track of the chat history
   ]
@@ -44,10 +46,16 @@ agent = OpenAIFunctionsAgent(
   tools=tools
 )
 
+memory = ConversationBufferMemory(
+  memory_key='chat_history',
+  return_messages=True
+)
+
 agent_executor = AgentExecutor(
   agent=agent,
   verbose=True,
-  tools=tools
+  tools=tools,
+  memory=memory
 )
 
 # worked since it's simple enough
@@ -58,4 +66,8 @@ agent_executor = AgentExecutor(
 
 # testing for generate report
 # ChatGPT output: The top 5 most popular products have been summarized and written to a report file. You can download the report from [this link](sandbox:/top_5_popular_products_report.html)
-agent_executor('Summarize the top 5 most popular products. Write the results in table format with producd it, name, price, and total amount to a report file')
+# agent_executor('Summarize the top 5 most popular products. Write the results in table format with producd it, name, price, and total amount to a report file')
+
+# testing multiple calls of agent_executor and the use of memory
+agent_executor('How many orders are there? Write the result to an HTML report in tabular format.')
+agent_executor('Repeat the exact same process for users.')
