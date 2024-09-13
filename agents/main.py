@@ -58,4 +58,4 @@ agent_executor = AgentExecutor(
 
 # testing for generate report
 # ChatGPT output: The top 5 most popular products have been summarized and written to a report file. You can download the report from [this link](sandbox:/top_5_popular_products_report.html)
-agent_executor('Summarize the top 5 most popular products. Write the results to a report file')
+agent_executor('Summarize the top 5 most popular products. Write the results in table format with producd it, name, price, and total amount to a report file')
