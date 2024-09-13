@@ -3,12 +3,13 @@
 1. cd "C:\Users\Kenneth\Documents\Courses\Udemy - ChatGPT and Langchain - The Complete Developer Masterclass\langchain-projects\agents"
 2. conda activate langchain
 3. pipenv install (run once)
-4. pipenv shell
+4. pip install pyboxen (run once)
+5. pipenv shell
    
-5. python main.py
+6. python main.py
 
-6.  exit
-7.  conda deactivate
+7.  exit
+8.  conda deactivate
 
 Use the online tool to generate JSON schema:
 https://transform.tools/json-to-json-schema

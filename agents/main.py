@@ -8,10 +8,15 @@ from dotenv import load_dotenv
 
 from tools.sql import list_tables, describe_table_tool, run_sqlite_tool
 from tools.report import write_report_tool
+from handlers.chat_model_start_handler import ChatModelStartHandler
 
 load_dotenv()
 
-chat = ChatOpenAI()
+handler = ChatModelStartHandler()
+
+chat = ChatOpenAI(
+  callbacks=[handler]
+)
 
 tables = list_tables()
 
@@ -24,7 +29,7 @@ prompt = ChatPromptTemplate(
     # better SystemMessage content
     SystemMessage(content=(
       'You are an AI that has access to a SQLite database.\n'
-      f'The database has tables of {tables}.\n'
+      f'The database has the following tables: \n{tables}\n'
       'Do not make any assumptions about what tables or columns exist.\n'
       'Let make use of the provided "describe_tables" function instead.'
     )),
@@ -53,7 +58,7 @@ memory = ConversationBufferMemory(
 
 agent_executor = AgentExecutor(
   agent=agent,
-  verbose=True,
+  # verbose=True,
   tools=tools,
   memory=memory
 )
