@@ -16,7 +16,7 @@ flask --app app.web init-db
 
 ## Using Venv [Optional]
 
-These instructions are included if you wish to use venv to manage your evironment and dependencies instead of Pipenv.
+These instructions are included if you wish to use venv to manage your environment and dependencies instead of Pipenv.
 
 ```
 # Create the venv virtual environment
