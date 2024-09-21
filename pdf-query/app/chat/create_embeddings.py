@@ -1,6 +1,8 @@
 from langchain.document_loaders import PyPDFLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 
+from app.chat.vector_stores.pinecone import vector_store
+
 def create_embeddings_for_pdf(pdf_id: str, pdf_path: str):
     """
     Generate and store embeddings for the given pdf
@@ -30,4 +32,6 @@ def create_embeddings_for_pdf(pdf_id: str, pdf_path: str):
     # test this part of code, see ../../../local-do-files/readme.md for instruction
     # navigate to http://localhost:8000
     # then log in using uid: test@test.com / pwd: hello
-    print(docs)
+    # print(docs)
+
+    vector_store.add_documents(docs)
