@@ -6,4 +6,5 @@ Use this to run a local file-upload server.
 - Start the server with `python app.py`
 - In the `pdf-query` project, find the `.env` file and change the `UPLOAD_URL` line to the following: `UPLOAD_URL=http://localhost:8050`
 - Exit the Pipenv virtual enviorment and recreate using `pipenv shell`
-- Run `inv dev` to restart the pdf application
+- Run `inv dev` to restart the pdf-query application
+- Run `inv devworker` to start  pdf-query's worker

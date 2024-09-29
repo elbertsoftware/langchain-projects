@@ -26,8 +26,8 @@ def upload_file(file_id, file_path, file_name):
 
     pdf = Pdf.create(id=file_id, name=file_name, user_id=g.user.id)
 
-    # TODO: Defer this to be processed by the worker
-    process_document(pdf.id)
+    # use .delay() to run the shared task on the worker server as a job by the help from celery
+    process_document.delay(pdf.id)
 
     return pdf.as_dict()
 
