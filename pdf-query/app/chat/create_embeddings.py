@@ -34,4 +34,11 @@ def create_embeddings_for_pdf(pdf_id: str, pdf_path: str):
     # then log in using uid: test@test.com / pwd: hello
     # print(docs)
 
+    # add document metadata
+    for doc in docs:
+        doc.metadata = {
+            "pdf_id": pdf_id,
+            "page": doc.metadata['page'],
+            "text": doc.page_content
+        }
     vector_store.add_documents(docs)
