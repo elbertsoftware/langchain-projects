@@ -15,5 +15,13 @@ prompt = ChatPromptTemplate.from_messages([
 messages = prompt.format_messages(content="tell me a joke")
 # print(messages)
 
-output = chat(messages)
-print(output)
+# no streaming
+# output = chat(messages)
+# print(output)
+
+# streaming from langchain to the app
+output = chat.stream(messages)  # stream() forces streaming capability no matter what streaming flag in ChatOpenAI instant is True/False 
+# print(output)
+
+for o in output:
+  print(o.content)
