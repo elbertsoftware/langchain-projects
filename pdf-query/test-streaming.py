@@ -6,16 +6,19 @@ from langchain.chains import LLMChain
 from langchain.callbacks.base import BaseCallbackHandler
 
 from dotenv import load_dotenv
-from langchain_core.outputs import ChatGenerationChunk, GenerationChunk
+from queue import Queue
 
 
 class StreamingHandler(BaseCallbackHandler):
   def on_llm_new_token(self, token, **kwargs):
+    # streaming tokens arrive one by one
     # print(token)
-    pass
+    queue.put(token)
 
 
 load_dotenv()
+
+queue = Queue()
 
 chat = ChatOpenAI(
   streaming=True,
@@ -64,13 +67,21 @@ prompt = ChatPromptTemplate.from_messages([
 
 class StreamingChain(LLMChain):
   def stream(self, input):
-    self(input)  # make sure the stream method should run the chain
+    # make sure the stream method should run the chain 
+    # but it's not gonna work since it waits for full response before executing the next line of code
+    # which is handling actual streaming
+    self(input)  
 
-    # print('hi there') 
+    # print('hi there')
 
-    # returning a generator that produces strings
-    yield 'hi'
-    yield ' there'
+    # test returning a generator that produces strings
+    # yield 'hi'
+    # yield ' there'
+
+    # yield tokens from StreamingHandler's on_llm_new_token() callback into the generator
+    while True:
+      token = queue.get()
+      yield token
 
 
 chain = StreamingChain(
