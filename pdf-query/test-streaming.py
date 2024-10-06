@@ -1,5 +1,6 @@
 from langchain.chat_models import ChatOpenAI
 from langchain.prompts import ChatPromptTemplate
+from langchain.chains import LLMChain
 
 from dotenv import load_dotenv
 
@@ -12,16 +13,36 @@ prompt = ChatPromptTemplate.from_messages([
     ('human', '{content}')
 ])
 
-messages = prompt.format_messages(content="tell me a joke")
+chain = LLMChain(
+  llm=chat,
+  prompt=prompt
+)
+
+# messages = prompt.format_messages(content="tell me a joke")
 # print(messages)
 
-# no streaming
+# 1. no streaming with direct language mode
 # output = chat(messages)
 # print(output)
 
-# streaming from langchain to the app
-output = chat.stream(messages)  # stream() forces streaming capability no matter what streaming flag in ChatOpenAI instant is True/False 
+# 2. streaming with direct language model from langchain to the app
+# output = chat.stream(messages)  # stream() forces streaming capability no matter what streaming flag in ChatOpenAI instant is True/False 
 # print(output)
 
+# for o in output:
+#   print(o.content)
+
+# 3. no stream with chain
+# output = chain('tell me a joke')
+# print(output)
+
+# 4. non implemented default streaming with chain
+output = chain.stream(
+  input={
+    'content': 'tell me a joke'
+  }
+)
+
+# print(output)
 for o in output:
-  print(o.content)
+  print(o)
