@@ -7,6 +7,7 @@ from langchain.callbacks.base import BaseCallbackHandler
 
 from dotenv import load_dotenv
 from queue import Queue
+from threading import Thread
 
 
 class StreamingHandler(BaseCallbackHandler):
@@ -70,7 +71,13 @@ class StreamingChain(LLMChain):
     # make sure the stream method should run the chain 
     # but it's not gonna work since it waits for full response before executing the next line of code
     # which is handling actual streaming
-    self(input)  
+    # self(input) 
+
+    # using thread to solve the issue mentioned above
+    def task():
+      self(input)
+
+    Thread(target=task).start()  # run this on a seperate thread
 
     # print('hi there')
 
