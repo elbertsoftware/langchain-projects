@@ -14,7 +14,7 @@ class StreamableChain:
 
     def task(app_context):
       app_context.push()  # add the thread into the existing flask webapp's content
-      
+
       self(
         input,
         callbacks=[handler]
@@ -22,7 +22,7 @@ class StreamableChain:
 
     Thread(
       target=task, 
-      args-[current_app.app_context()]  # make sure the thread will be part of the flask webapp's context
+      args=[current_app.app_context()]  # make sure the thread will be part of the flask webapp's context
     ).start()  # run this on a seperate thread
 
     while True:
