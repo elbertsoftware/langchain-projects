@@ -1,15 +1,11 @@
-from typing import Any
-from uuid import UUID
 from langchain.chat_models import ChatOpenAI
 from langchain.prompts import ChatPromptTemplate
-from langchain.chains import LLMChain
+from langchain.chains import LLMChain, ConversationalRetrievalChain
 from langchain.callbacks.base import BaseCallbackHandler
 
 from dotenv import load_dotenv
 from queue import Queue
 from threading import Thread
-
-from langchain_core.outputs import LLMResult
 
 
 class StreamingHandler(BaseCallbackHandler):
@@ -75,7 +71,8 @@ prompt = ChatPromptTemplate.from_messages([
 
 # 5. Streaming from a chain
 
-class StreamingChain(LLMChain):
+# Mixin approach!
+class StreamableChain:
   def stream(self, input):
     queue = Queue()
     handler = StreamingHandler(queue)
@@ -107,6 +104,14 @@ class StreamingChain(LLMChain):
         break
       
       yield token
+
+
+class StreamingChain(StreamableChain, LLMChain):
+  pass
+
+
+class StreamingConversationalRetrievalChain(StreamableChain, ConversationalRetrievalChain):
+  pass
 
 
 chain = StreamingChain(
