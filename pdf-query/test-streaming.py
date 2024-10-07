@@ -13,25 +13,26 @@ from langchain_core.outputs import LLMResult
 
 
 class StreamingHandler(BaseCallbackHandler):
+  def __init__(self, queue):
+    self.queue = queue
+
   def on_llm_new_token(self, token, **kwargs):
     # streaming tokens arrive one by one
     # print(token)
-    queue.put(token)
+    self.queue.put(token)
 
   def on_llm_end(self, response, **kwargs):
-    queue.put(None)  # ending the while loop below since there is no more streaming
+    self.queue.put(None)  # ending the while loop below since there is no more streaming
 
   def on_llm_error(self, error, **kwargs):
-    queue.put(None)  # ending the while loop below in case of error
+    self.queue.put(None)  # ending the while loop below in case of error
 
 
 load_dotenv()
 
-queue = Queue()
-
 chat = ChatOpenAI(
-  streaming=True,
-  callbacks=[StreamingHandler()]
+  streaming=True
+  # callbacks=[StreamingHandler()]
 )
 
 prompt = ChatPromptTemplate.from_messages([
@@ -76,6 +77,9 @@ prompt = ChatPromptTemplate.from_messages([
 
 class StreamingChain(LLMChain):
   def stream(self, input):
+    queue = Queue()
+    handler = StreamingHandler(queue)
+
     # make sure the stream method should run the chain 
     # but it's not gonna work since it waits for full response before executing the next line of code
     # which is handling actual streaming
@@ -83,7 +87,10 @@ class StreamingChain(LLMChain):
 
     # using thread to solve the issue mentioned above
     def task():
-      self(input)
+      self(
+        input,
+        callbacks=[handler]
+      )
 
     Thread(target=task).start()  # run this on a seperate thread
 
