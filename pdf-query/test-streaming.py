@@ -9,12 +9,20 @@ from dotenv import load_dotenv
 from queue import Queue
 from threading import Thread
 
+from langchain_core.outputs import LLMResult
+
 
 class StreamingHandler(BaseCallbackHandler):
   def on_llm_new_token(self, token, **kwargs):
     # streaming tokens arrive one by one
     # print(token)
     queue.put(token)
+
+  def on_llm_end(self, response, **kwargs):
+    queue.put(None)  # ending the while loop below since there is no more streaming
+
+  def on_llm_error(self, error, **kwargs):
+    queue.put(None)  # ending the while loop below in case of error
 
 
 load_dotenv()
@@ -88,6 +96,9 @@ class StreamingChain(LLMChain):
     # yield tokens from StreamingHandler's on_llm_new_token() callback into the generator
     while True:
       token = queue.get()
+      if token is None:
+        break
+      
       yield token
 
 
