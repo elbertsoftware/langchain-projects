@@ -14,11 +14,12 @@ vector_store = Pinecone.from_existing_index(
   embeddings
 )
 
-def build_retriever(chat_args):
+def build_retriever(chat_args, k):
   return vector_store.as_retriever(
     search_kwargs={
       'filter': {
-        'pdf_id': chat_args.pdf_id
+        'pdf_id': chat_args.pdf_id,
+        'k': k  # number of returning docs, 1 by default
       }
     }
   )
