@@ -9,7 +9,7 @@ class StreamingHandler(BaseCallbackHandler):
   def on_chat_model_start(self, serialized, messages, run_id, **kwargs):
     # print(serialized)
     # print(run_id)
-    if serialized['kwagrs']['streaming']:
+    if serialized['kwargs']['streaming']:
       # print('Streaming model: should listen to events with a run_id of', run_id)
       self.streaming_run_ids.add(run_id)
 

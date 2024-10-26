@@ -160,3 +160,7 @@ Then:
 ```
 flask --app app.web init-db
 ```
+
+### Web app:
+navigate to http://localhost:8000
+then log in using uid: test@test.com / pwd: hello

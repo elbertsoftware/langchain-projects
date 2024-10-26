@@ -30,8 +30,6 @@ def create_embeddings_for_pdf(pdf_id: str, pdf_path: str):
     docs = loader.load_and_split(splitter)
 
     # test this part of code, see ../../../local-do-files/readme.md for instruction
-    # navigate to http://localhost:8000
-    # then log in using uid: test@test.com / pwd: hello
     # print(docs)
 
     # add document metadata
@@ -41,4 +39,5 @@ def create_embeddings_for_pdf(pdf_id: str, pdf_path: str):
             "page": doc.metadata['page'],
             "text": doc.page_content
         }
+
     vector_store.add_documents(docs)
