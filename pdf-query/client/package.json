@@ -36,13 +36,14 @@
 	"dependencies": {
 		"@microsoft/fetch-event-source": "^2.0.1",
 		"@types/marked": "^4.3.0",
-		"axios": "^0.27.2",
+		"axios": "^1.7.7",
 		"chart.js": "^4.4.0",
 		"classnames": "^2.3.2",
+		"client": "file:",
 		"immer": "^9.0.12",
 		"marked": "^4.3.0",
 		"material-icons": "^1.13.11",
-		"pdfjs-dist": "^3.5.141",
+		"pdfjs-dist": "^4.7.76",
 		"preline": "^1.8.0",
 		"uuid": "^9.0.0"
 	}
