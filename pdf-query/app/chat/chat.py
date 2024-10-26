@@ -43,7 +43,7 @@ def build_chat(chat_args: ChatArgs):
     memory_name, memory = select_component('memory', memory_map, chat_args)
     retriever_name, retriever = select_component('retriever', retriever_map, chat_args)
 
-    print(f'Running chain with llm:\n\t{llm_name}\n\tmemory: {memory_name}\n\tretriever: {retriever_name}')
+    print(f'Running chain with:\n\tllm: {llm_name}\n\tmemory: {memory_name}\n\tretriever: {retriever_name}')
     set_conversation_components(
         conversation_id=chat_args.conversation_id,
         llm=llm_name,
