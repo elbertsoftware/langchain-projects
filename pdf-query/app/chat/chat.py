@@ -1,3 +1,5 @@
+import random
+
 from langchain.chat_models import ChatOpenAI
 
 from app.chat.models import ChatArgs
@@ -6,8 +8,6 @@ from app.chat.memories import memory_map
 from app.chat.vector_stores import retriever_map
 from app.chat.chains.retrieval import StreamingConversationalRetrievalChain
 from app.web.api import set_conversation_components, get_conversation_components
-
-import random
 
 
 def select_component(component_type, component_map, chat_args):

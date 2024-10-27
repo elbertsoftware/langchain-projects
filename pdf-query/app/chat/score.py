@@ -1,6 +1,7 @@
-def score_conversation(
-    conversation_id: str, score: float, llm: str, retriever: str, memory: str
-) -> None:
+from app.chat.redis import client  # choosing redis for simplicity of increasing numbers by an amount
+
+
+def score_conversation(conversation_id: str, score: float, llm: str, retriever: str, memory: str) -> None:
     """
     This function interfaces with langfuse to assign a score to a conversation, specified by its ID.
     It creates a new langfuse score utilizing the provided llm, retriever, and memory components.
