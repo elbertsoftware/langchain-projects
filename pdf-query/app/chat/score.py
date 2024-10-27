@@ -18,7 +18,17 @@ def score_conversation(conversation_id: str, score: float, llm: str, retriever: 
     score_conversation('abc123', 0.75, 'llm_info', 'retriever_info', 'memory_info')
     """
 
-    pass
+    score = min(max(score, 0), 1)  # make sure score falls b/w 0 and 1
+
+    # hash increase by
+    client.hincrby('llm_score_values', llm, score)  # increase value of key 'llm' in the hash 'llm_score_values' by score
+    client.hincrby('llm_score_counts', llm, 1)
+
+    client.hincrby('retriever_score_values', retriever, score)
+    client.hincrby('retriever_score_counts', retriever, 1)
+
+    client.hincrby('memory_score_values', memory, score)
+    client.hincrby('memory_score_counts', memory, 1)
 
 
 def get_scores():
