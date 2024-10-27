@@ -1,5 +1,3 @@
-import random
-
 from langchain.chat_models import ChatOpenAI
 
 from app.chat.models import ChatArgs
@@ -7,6 +5,8 @@ from app.chat.llms import llm_map
 from app.chat.memories import memory_map
 from app.chat.vector_stores import retriever_map
 from app.chat.chains.retrieval import StreamingConversationalRetrievalChain
+from app.chat.score import random_component_by_score
+
 from app.web.api import set_conversation_components, get_conversation_components
 
 
@@ -22,7 +22,7 @@ def select_component(component_type, component_map, chat_args):
     else:
         # this is the first message of the conversation
         # gonna pick a random component to use
-        random_component_name = random.choice(list(component_map.keys()))
+        random_component_name = random_component_by_score(component_type, component_map)
 
         builder = component_map[random_component_name]
         return random_component_name, builder(chat_args)
