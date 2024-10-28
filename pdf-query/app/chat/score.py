@@ -88,9 +88,28 @@ def get_scores():
                 'chatopenai-3.5-turbo': [score1, score2],
                 'chatopenai-4': [score3, score4]
             },
-            'retriever': { 'pinecone_store': [score5, score6] },
-            'memory': { 'persist_memory': [score7, score8] }
+            'memory': { 'persist_memory': [score7, score8] },
+            'retriever': { 'pinecone_store': [score5, score6] }            
         }
     """
 
-    pass
+    aggregate = {
+        'llm': {},
+        'memory': {},
+        'retriever': {}
+    }
+
+    for component_type in aggregate.keys():
+        values = client.hgetall(f'{component_type}_score_values')
+        counts = client.hgetall(f'{component_type}_score_counts')
+
+        names = values.keys()
+        for name in names:
+            value = int(values.get(name, 1))
+            count = int(counts.get(name, 1))
+
+            score = value / count
+            aggregate[component_type][name] = [score]
+
+
+    return aggregate
