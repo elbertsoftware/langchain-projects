@@ -1,4 +1,5 @@
 from langchain.chat_models import ChatOpenAI
+from langfuse.model import CreateTrace
 
 from app.chat.models import ChatArgs
 from app.chat.llms import llm_map
@@ -6,6 +7,7 @@ from app.chat.memories import memory_map
 from app.chat.vector_stores import retriever_map
 from app.chat.chains.retrieval import StreamingConversationalRetrievalChain
 from app.chat.score import random_component_by_score
+from app.chat.tracing.langfuse import langfuse
 
 from app.web.api import set_conversation_components, get_conversation_components
 
@@ -51,6 +53,13 @@ def build_chat(chat_args: ChatArgs):
         retriever=retriever_name
     )
 
+    trace = langfuse.trace(
+        CreateTrace(
+            id=chat_args.conversation_id,  # important to be sure subsequent traces added into the same trace 
+            metadata=chat_args.metadata
+        )
+    )
+
     return StreamingConversationalRetrievalChain.from_llm(
         llm=llm,
         memory=memory,
@@ -58,5 +67,7 @@ def build_chat(chat_args: ChatArgs):
 
         # specify a separate LLM for the internal condense question chain to use
         # instead of sharing the same chain with combine doc chain
-        condense_question_llm=ChatOpenAI(streaming=False) 
+        condense_question_llm=ChatOpenAI(streaming=False),
+
+        callbacks=[trace.getNewHandler()]
     )
